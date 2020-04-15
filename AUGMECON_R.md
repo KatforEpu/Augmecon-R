@@ -1,5 +1,6 @@
 # Augmecon-R
 This is a GAMS implementation of an improved version of the augmented eps-constraint method for generating the efficient (Pareto optimal, nondominated) solutions in multiobjective problems. 
+
 Set
    I 'constraints'         / i1* i5 /
    J 'decision variables'  / j1*j10 /
