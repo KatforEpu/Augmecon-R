@@ -1,54 +1,131 @@
-Set
-   I 'constraints'         / i1* i5 /
-   J 'decision variables'  / j1*j10 /
-   K 'objective functions' / k1* k5 /
+ Set
+   I 'constraints'         / i1* i4 /
+   J 'decision variables'  / j1*j40 /
+   K 'objective functions' / k1* k4 /
    ;
 
 Parameter
-   dir(k) 'direction of the objective functions 1 for max and -1 for min' / k1 1, k2 1, k3 1, k4 1, k5 1  /
-   b(I)   'RHS of the constraints' /  i1 220, i2 175 , i3 215, i4 150, i5 190/;
-
-
+   dir(k) 'direction of the objective functions 1 for max and -1 for min' / k1 1, k2 1, k3 1, k4 1  /
+   b(I)   'RHS of the constraints' /   i1 1570, i2 1210 , i3 1355, i4 1035/;
 
 Table c(J,K) 'matrix of objective function coefficients C'
-           k1        k2        k3        k4        k5
-j1         14        17        17        28        27
-j2         43        11        32        15        32
-j3         26        26        18        29        27
-j4         24        22        42        34        21
-j5         25        29        13        42        25
-j6         31        39        17        42        41
-j7         36        41        47        37        27
-j8         29        50        15        31        50
-j9         45        47        17        17        36
-j10        45        50        20        47        39
+           k1        k2        k3        k4
+j1         7         22        17        5
+j2         13        10        11        25
+j3         16        20        5         8
+j4         19        20        11        18
+j5         24        20        3         20
+j6         24        3         7         10
+j7         23        24        4         7
+j8         6         7         19        20
+j9         5         24        8         17
+j10        20        16        8         11
+j11        10        24        3         10
+j12        7         14        7         15
+j13        23        20        9         2
+j14        3         8         15        20
+j15        7         3         16        23
+j16        20        19        19        18
+j17        9         10        10        10
+j18        13        4         12        5
+j19        20        2         12        4
+j20        18        17        13        11
+j21        17        10        12        23
+j22        6         10        7         24
+j23        7         15        19        8
+j24        10        7         11        15
+j25        11        12        24        12
+j26        5         7         22        8
+j27        22        10        5         3
+j28        16        17        21        21
+j29        16        7         13        16
+j30        3         10        14        5
+j31        8         23        24        11
+j32        3         11        4         19
+j33        20        10        5         2
+j34        18        15        7         9
+j35        10        4         5         19
+j36        22        9         8         21
+j37        6         19        13        8
+j38        20        10        10        3
+j39        12        24        17        6
+j40        11        24        16        21
+
+
+
+
   ;
+
 Table a(J,I) 'matrix of technological coefficients A'
-            i1       i2        i3        i4        i5
-j1         29        38        47        29        36
-j2         29        47        45        40        48
-j3         35        41        23        23        11
-j4         46        33        13        45        23
-j5         14        35        42        14        27
-j6         46        41        19        33        34
-j7         30        46        22        21        21
-j8         16        36        28        50        43
-j9         23        13        18        50        46
-j10        29        16        39        13        45
-;
+           i1         i2         i3         i4
+j1         78         59         53         76
+j2         94         67         75         51
+j3         97         88         117        88
+j4         116        107        101        102
+j5         50         65         77         90
+j6         62         77         88         114
+j7         66         93         52         107
+j8         110        89         64         94
+j9         63         107        118        57
+j10        59         110        87         71
+j11        118        95         66         58
+j12        104        77         101        114
+j13        117        111        116        106
+j14        120        97         105        94
+j15        65         100        65         109
+j16        102        95         97         73
+j17        100        69         84         81
+j18        97         99         55         77
+j19        61         66         99         53
+j20        102        113        103        85
+j21        71         89         115        71
+j22        86         73         91         99
+j23        53         85         98         56
+j24        110        88         64         84
+j25        58         84         113        101
+j26        87         58         60         50
+j27        69         76         83         69
+j28        69         79         111        83
+j29        71         96         81        113
+j30        83         75         64         94
+j31        85         112        110        84
+j32        88         81         80         75
+j33        109        63         61         71
+j34        115        103        56         80
+j35        106        112        69         105
+j36        95         68         75         76
+j37        98         71         71         83
+j38        87         52         52         80
+j39        102        94         109        54
+j40        56         107        63         101
+
+
+
+
+
+
+
+
+    ;
 
 Variable
-  Z(K) 'objective function variables'
+   Z(K) 'objective function variables'
    X(J) 'decision variables';
 
 Binary Variable X;
+
+
+
 Equations
    objfun(K)    objective functions
    con(I)    constraints
 ;
+
 objfun(K).. sum(J,c(J,K)*X(J)) =e= Z(K);
 con(I).. sum(J, a(J,I)*X(J)) =l= b(I);
+
 Model example / all /;
+
 $STitle eps-constraint method
 
 Set k1(k) the first element of k, km1(k) all but the first elements of k;
@@ -59,7 +136,8 @@ Parameter
    rhs(k)     right hand side of the constrained obj functions in eps-constraint
    maxobj(k)  maximum value from the payoff table
    minobj(k)  minimum value from the payoff table
-   numk(k) ordinal value of k starting with 1   ;
+   numk(k) ordinal value of k starting with 1
+   range(k) maxobj-minobj   ;
 
 Scalar
 iter   total number of iterations
@@ -73,7 +151,6 @@ Variables
    obj        auxiliary variable during the construction of the payoff table ;
 Positive Variables
    sl(k)      slack or surplus variables for the eps-constraints   ;
-
 Equations
    con_obj(k) constrained objective functions
    augm_obj   augmented objective function to avoid weakly efficient solutions
@@ -83,6 +160,7 @@ con_obj(km1)..   z(km1) - dir(km1)*sl(km1) =e= rhs(km1);
 
 * We optimize the first objective function and put the others as constraints
 * the second term is for avoiding weakly efficient points
+
 * objfun=max z1 + 0.001*(s1/r1+0.1 s2/r2+ 0.01*s3/r3+...)
 augm_obj..
   sum(k1,dir(k1)*z(k1))+1.0e-3*sum(km1,power(10,-(numk(km1)-1))*sl(km1)/(maxobj(km1)-minobj(km1))) =e= a_objval;
@@ -97,13 +175,13 @@ Parameter
 Alias(k,kp);
 
 option optcr=0.0;
-option limrow=0, limcol=0, solprint=off ,solveLink = %solveLink.LoadLibrary%;
-;
+option limrow=0, limcol=0, solprint=off, solveLink = %solveLink.LoadLibrary% ;
 $offlisting;
 $offsymxref;
 $offsymlist;
 $offuelxref;
 $offuellist;
+*,solveLink = %solveLink.LoadLibrary%
 *file cplexopt /cplex.opt/;
 *put cplexopt;
 *put 'threads 4'/;
@@ -128,7 +206,7 @@ loop(kp,
 );
 if (mod_payoff.modelstat<>1 and mod_payoff.modelstat<>8, abort 'no optimal solution for mod_payoff');
 
-File fx  / 5kp10.txt /;
+File fx  / 4kp40_uncorrelated_nadir.txt /;
 
 PUT fx ' PAYOFF TABLE'/   ;
 loop (kp,
@@ -138,100 +216,105 @@ loop (kp,
 put fx /;
 
 *display payoff;
-minobj(k)=floor(0.95*smin(kp,payoff(kp,k)));
+*minobj(k)=smin(kp,payoff(kp,k));
 **$ontext
+*Ideally minobj(k) could be set to zero value minobj(k)=0;
+minobj(k)=floor(0.088*smin(kp,payoff(kp,k)));
 maxobj(k)=smax(kp,payoff(kp,k));
-
+range(k)=(maxobj(k)-minobj(k));
 *$ontext
 *$set fname h.%scrext.dat%
-*gridpoints=max integer of km1 = 4149
 
-$if not set gridpoints_1   $set gridpoints_1 307
-$if not set gridpoints_2   $set gridpoints_2  232
-$if not set gridpoints_3   $set gridpoints_3  242
-$if not set gridpoints_4   $set gridpoints_4  183
+*gridpoints=max integer of km1
+
+$if not set gridpoints_1  $set gridpoints_1 300
+$if not set gridpoints_2  $set gridpoints_2 300
+$if not set gridpoints_3  $set gridpoints_3 300
+*Generally speaking gridpoints are set to a very large value
 Set g grid points /g0*g%gridpoints_1%/
     grid(k,g) 'grid '
-     q    /q0*q%gridpoints_1%/
- r     /r0*r%gridpoints_2%/
-   s    /s0*s%gridpoints_3 %/
-  t     /t0*t%gridpoints_4 %/
+    q    /q0*q%gridpoints_1%/
+    r     /r0*r%gridpoints_2%/
+    s    /s0*s%gridpoints_3%/
+
 
    ;
 
 
 Parameter
     gridrhs(k,g)
-    maxg(k) maximum point in grid for objective k
-    posg(k) grid position of objective k
-    firstOffMax, lastZero,  current1, current2, current3, current4, synthiki, b2, b3, b4, b5, terminal1, terminal2, terminal3, terminal4, control1, control2 some counters
+    maxg(k) maximum point in grid for objective
+    posg(k) grid position of objective
+    firstOffMax, lastZero, current1, current2, current3,  synthiki, b2, b3, b4, terminal1, terminal2, terminal3, control1, control2, range1, range2, range3 some counters
 *    numk(k) ordinal value of k starting with 1
     numg(g) 'ordinal value of g starting with 0  '
     step(k) step of grid points in objective functions
     jump(k) jumps in the grid points' traversing only for the first objective function
-   numq(q)   ordinal value of q starting with 0
-   numr(r)    ordinal value of r starting with 0
-   nums(s)   ordinal value of s starting with 0
-   numt(t)   ordinal value of t starting with 0
- flag(q,r,s,t)   optimization control matrix
+    numq(q)  ordinal value of q starting with zero
+    numr(r)  ordinal value of r starting with zero
+    nums(s)  ordinal value of s starting with zero
+    flag(q,r,s) memory matrix
+
+
 ;
 
-lastZero=1; loop(km1, numk(km1)=lastZero; lastZero=lastZero+1); numg(g) = ord(g)-1;
+
+ lastZero=1; loop(km1, numk(km1)=lastZero; lastZero=lastZero+1); numg(g) = ord(g)-1;
  numq(q) = ord(q)-1;
  numr(r) = ord(r)-1;
  nums(s) = ord(s)-1;
- numt(t) = ord(t)-1;
-*initialization of flag matrix
-loop(q,
-       loop(r,
-            loop(s,
-                loop(t,flag(q,r,s,t)=0););););
+ range1=sum(k$(ord(k)=2),range(k));
+ range2=sum(k$(ord(k)=3),range(k));
+ range3=sum(k$(ord(k)=4),range(k));
+
+loop(q$(numq(q)<range1+1),
+       loop(r$(numr(r)<range2+1),
+            loop(s$(nums(s)<range3+1), flag(q,r,s)=0);););
+
+
 
 grid(km1,g) = yes;
-maxg(k)=(maxobj(k)-minobj(k));
+maxg(k)=range(k);
 step(km1)   = 1 ;
 gridrhs(grid(km1,g))$(dir(km1)=-1) = maxobj(km1) - numg(g)/maxg(km1)*(maxobj(km1)- minobj(km1));
 gridrhs(grid(km1,g))$(dir(km1)=1) = minobj(km1) + numg(g)*step(km1);
 *display gridrhs;
 
-PUT fx ' Grid points'/   ;
-loop (g,
-       loop(km1, put gridrhs(km1,g):12:2);
-        put /;   );
+*PUT fx ' Grid points'/   ;
+*loop (g,
+*       loop(km1, put gridrhs(km1,g):12:2);
+*        put /;
+*     );
 put fx /;
 put fx 'Efficient solutions'/;
 
 * Walk the grid points and take shortcuts if the model becomes infeasible
 posg(km1) = 0;
+
 iter=0;
 infeas=0;
 terminal1=0;
 terminal2=0;
 terminal3=0;
-terminal4=0;
 terminal1=sum(km1$(numk(km1)=1),maxg(km1));
 terminal2=sum(km1$(numk(km1)=2),maxg(km1));
 terminal3=sum(km1$(numk(km1)=3),maxg(km1));
-terminal4=sum(km1$(numk(km1)=4),maxg(km1));
- synthiki=0;
-  control1=0;
+synthiki=0;
+control1=0;
 start=jnow;
+
 
 repeat
   rhs(km1) = sum(grid(km1,g)$(numg(g)=posg(km1)), gridrhs(km1,g));
   current1=0;
   current2=0;
   current3=0;
-  current4=0;
   current1=sum(km1$(numk(km1)=1),posg(km1))  ;
   current2=sum(km1$(numk(km1)=2),posg(km1))  ;
   current3=sum(km1$(numk(km1)=3),posg(km1))  ;
-  current4=sum(km1$(numk(km1)=4),posg(km1))  ;
-
- loop(q$(numq(q)=  current1),
-       loop(r$(numr(r)=current2),
-            loop(s$(nums(s)=current3),
-                   loop(t$(numt(t)=current4), synthiki=flag(q,r,s,t)););););
+ loop(q$(numq(q)=current1),
+      loop(r$(numr(r)=current2),
+         loop(s$(nums(s)=current3), synthiki=flag(q,r,s));););
   if(synthiki=0,  solve mod_epsmethod maximizing a_objval using mip);
   iter=iter+1;
   if (synthiki=0 and mod_epsmethod.modelstat<>1 and mod_epsmethod.modelstat<>8,
@@ -239,12 +322,12 @@ repeat
     put fx iter:5:0, '  infeasible'/;
     lastZero = 0; loop(km1$(posg(km1)>0 and lastZero=0), lastZero=numk(km1));
     posg(km1)$(numk(km1)<=lastZero) = maxg(km1);
-   loop(t$(numt(t)>=current4 and numt(t)<=terminal4),
-       loop(s$(nums(s)>=current3 and nums(s)<= terminal3),
-           loop(r$(numr(r)>=current2 and numr(r)<= terminal2),
-               loop(q$(numq(q)=current1), flag(q,r,s,t)= terminal1-current1+1););););
+       loop(s$(nums(s)>=current3 and nums(s)<=terminal3),
+           loop(r$(numr(r)>=current2 and numr(r)<=terminal2),
+               loop(q$(numq(q)=current1), flag(q,r,s)=terminal1-current1+1);););
 
-   else if(synthiki=0 ,
+
+  else if(synthiki=0 ,
     put fx iter:5:0;
     loop(k, put fx z.l(k):12:2);
     put fx ' *** ';
@@ -253,15 +336,16 @@ repeat
    loop(km1$(numk(km1)=1),b2=floor(sl.l(km1)/step(km1)));
    loop(km1$(numk(km1)=2),b3=floor(sl.l(km1)/step(km1)));
    loop(km1$(numk(km1)=3),b4=floor(sl.l(km1)/step(km1)));
-   loop(km1$(numk(km1)=4),b5=floor(sl.l(km1)/step(km1)));
-   loop(t$(numt(t)>=current4 and numt(t)<= current4+b5),
-         loop(s$(nums(s)>=current3 and nums(s)<= current3+b4),
-               loop(r$(numr(r)>=current2 and numr(r)<= current2+b3),
-                    loop(q$(numq(q)=current1) ,   flag(q,r,s,t)=b2+1););););
+        loop(s$(nums(s)>=current3 and nums(s)<=current3+b4),
+              loop(r$(numr(r)>=current2 and numr(r)<=current2+b3),
+                   loop(q$(numq(q)=current1) ,   flag(q,r,s)=b2+1);););
 
-   jump(km1)=1;
 
+     jump(km1)=1;
+
+* calculate only for the first constrained objective function jump(km1)
     put fx ' * ';
+*    loop(km1$(numk(km1)=1), jump(km1)=1+floor(sl.L(km1)/step(km1)));
     jump(km1)$(numk(km1)=1)=1+floor(sl.L(km1)/step(km1));
     loop(km1, put fx jump(km1):5:0) ;
     loop(km1$(jump(km1)> 1),  put '   jump')
@@ -269,21 +353,26 @@ repeat
     );
    );
 
+
  jump(km1)$(numk(km1)>1)=1 ;
 * Proceed forward in the grid
   control1=0;
   firstOffMax = 0;
-loop(km1$(posg(km1)<maxg(km1) and firstOffMax=0 and numk(km1)=1 and synthiki>0),control2=posg(km1)+synthiki;posg(km1)=min(posg(km1)+synthiki,maxg(km1)); firstOffMax=numk(km1) );
-loop(km1$(posg(km1)=maxg(km1) and numk(km1)=1 and synthiki>0 and firstOffMax>0 and control2>maxg(km1)), control1=1);
-loop(km1$(posg(km1)<maxg(km1) and firstOffMax=0 and numk(km1)=1 and synthiki=0), posg(km1)=min((posg(km1)+jump(km1)),maxg(km1)); firstOffMax=numk(km1));
-loop(km1$(posg(km1)<maxg(km1) and firstOffMax=0 and numk(km1)>1), posg(km1)=min((posg(km1)+jump(km1)),maxg(km1)); firstOffMax=numk(km1));
+  loop(km1$(posg(km1)<maxg(km1) and firstOffMax=0 and numk(km1)=1 and synthiki>0),control2=posg(km1)+synthiki; posg(km1)=min(posg(km1)+synthiki,maxg(km1)); firstOffMax=numk(km1) );
+  loop(km1$(posg(km1)=maxg(km1) and numk(km1)=1 and synthiki>0 and firstOffMax>0 and control2>maxg(km1)), control1=1);
+  loop(km1$(posg(km1)<maxg(km1) and firstOffMax=0 and numk(km1)=1 and synthiki=0), posg(km1)=min((posg(km1)+jump(km1)),maxg(km1)); firstOffMax=numk(km1));
+  loop(km1$(posg(km1)<maxg(km1) and firstOffMax=0 and numk(km1)>1), posg(km1)=min((posg(km1)+jump(km1)),maxg(km1)); firstOffMax=numk(km1));
 
-loop(km1$(posg(km1)<maxg(km1) and control1>0 and numk(km1)>1), posg(km1)=min((posg(km1)+jump(km1)),maxg(km1)); firstOffMax=numk(km1); control1=0);
+
+   loop(km1$(posg(km1)<maxg(km1) and control1>0 and numk(km1)>1 ), posg(km1)=min((posg(km1)+jump(km1)),maxg(km1)); firstOffMax=numk(km1); control1=0);
 
                        posg(km1)$(numk(km1)<firstOffMax) = 0  ;
+
 until sum(km1$(posg(km1)=maxg(km1)),1)= card(km1) and firstOffMax=0;
+
 finish=jnow;
 elapsed_time=(finish-start)*86400;
+
 put /;
 put 'Infeasibilities = ', infeas:5:0 /;
 put 'Elapsed time: ',elapsed_time:10:2, ' seconds' / ;
